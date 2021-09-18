@@ -2,8 +2,8 @@ const {RSocketServer} = require('@rsocket/rsocket-core');
 const {WebsocketServerTransport} = require('@rsocket/rsocket-websocket-server');
 const Websocket = require('ws');
 const pino = require('pino');
-const FriendsService = require('./services/FriendsService');
 const logger = pino();
+const makeAcceptor = require('./AcceptorFactory');
 
 const transport = new WebsocketServerTransport({
     wsCreator: () => {
@@ -15,7 +15,7 @@ const transport = new WebsocketServerTransport({
 
 const server = new RSocketServer({
     transport,
-    acceptor: makeAcceptor()
+    acceptor: makeAcceptor({ logger })
 });
 
 let serverCloseable;

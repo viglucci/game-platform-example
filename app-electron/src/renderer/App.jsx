@@ -5,9 +5,11 @@ import RSocketContext from './contexts/RSocketContext';
 import FriendsList from './components/FriendsList';
 
 import './App.global.css';
+import useFriends from './hooks/useFriends';
 
 const ConnectedState = () => {
-  return <FriendsList />;
+  const [friends] = useFriends();
+  return <FriendsList friends={friends} />;
 };
 
 const ErrorState = () => {

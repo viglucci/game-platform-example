@@ -3,6 +3,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import React, { Fragment, useState } from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 const tabs = [
   { name: 'All', href: '#', current: true },
@@ -10,19 +11,8 @@ const tabs = [
   { name: 'Offline', href: '#', current: false },
 ];
 
-const team = [
-  {
-    name: 'Leslie Alexander',
-    handle: 'lesliealexander',
-    href: '#',
-    imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    status: 'online',
-  },
-  // More people...
-];
-
-const FriendsList = () => {
+// eslint-disable-next-line react/prop-types
+const FriendsList = ({ friends }) => {
   const [open, setOpen] = useState(true);
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -87,7 +77,7 @@ const FriendsList = () => {
                     </div>
                   </div>
                   <ul className="flex-1 divide-y divide-gray-200 overflow-y-auto">
-                    {team.map((person) => (
+                    {friends.map((person) => (
                       <li key={person.handle}>
                         <div className="relative group py-6 px-5 flex items-center">
                           <a
@@ -203,6 +193,14 @@ const FriendsList = () => {
       </Dialog>
     </Transition.Root>
   );
+};
+
+FriendsList.propTypes = {
+  friends: PropTypes.arrayOf(PropTypes.object),
+};
+
+FriendsList.defaultProps = {
+  friends: [],
 };
 
 export default FriendsList;

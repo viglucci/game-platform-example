@@ -238,6 +238,7 @@
     "postcss": "^8.3.6",
     "postcss-loader": "^6.1.1",
     "prettier": "^2.2.1",
+    "prop-types": "^15.7.2",
     "react-refresh": "^0.10.0",
     "react-test-renderer": "^17.0.2",
     "rimraf": "^3.0.0",

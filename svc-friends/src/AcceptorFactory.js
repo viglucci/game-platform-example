@@ -1,3 +1,5 @@
+const FriendsService = require('./services/FriendsService');
+
 function decodePayload(payload) {
     const data = payload.data || Buffer.from('{}');
     const metadata = payload.metadata || Buffer.from('{}');
@@ -9,22 +11,27 @@ function decodePayload(payload) {
 }
 
 const routeRegistry = {
-    registry: {},
+    registry: {
+        FIRE_AND_FORGET: {},
+        REQUEST_RESPONSE: {},
+        REQUEST_STREAM: {},
+        REQUEST_CHANNEL: {},
+    },
     registerService(service) {
         service.routes.forEach((route) => {
-            this.registry[route.name] = route;
+            this.registry[route.type][route.name] = route;
         });
     },
-    get(route) {
-        return this.registry[route];
+    get(route, type) {
+        return this.registry[type][route];
     }
 };
 
 const friendsService = new FriendsService();
 
-routeRegistry.registerService(tickerService);
+routeRegistry.registerService(friendsService);
 
-module.exports = function makeAcceptor() {
+module.exports = function makeAcceptor({ logger }) {
     return {
         accept: async (setupPayload, remotePeer) => {
             logger.info(
@@ -39,7 +46,7 @@ module.exports = function makeAcceptor() {
                 requestStream(payload, requestN, responder) {
 
                     const {data, metadata} = decodePayload(payload);
-                    const route = metadata.route;
+                    const {route} = metadata;
 
                     if (!route || typeof route !== 'string') {
                         const error = new Error('invalid route');
@@ -47,7 +54,7 @@ module.exports = function makeAcceptor() {
                     }
 
                     const subscription = routeRegistry
-                        .get(route)
+                        .get(route, "REQUEST_STREAM")
                         .handle({data, metadata, requestN})
                         .subscribe({
                             next(data) {
@@ -55,6 +62,43 @@ module.exports = function makeAcceptor() {
                                     data: Buffer.from(JSON.stringify(data)),
                                     metadata: undefined
                                 });
+                            },
+                            error(e) {
+                                logger.error(e);
+                                responder.onError(e);
+                            },
+                            complete() {
+                                responder.onComplete();
+                            }
+                        });
+
+                    return {
+                        cancel() {
+                            logger.info('stream canceled');
+                            subscription.unsubscribe();
+                        }
+                    };
+                },
+                requestResponse(payload, responder) {
+                    const {data, metadata} = decodePayload(payload);
+                    const {route} = metadata;
+
+                    if (!route || typeof route !== 'string') {
+                        const error = new Error('invalid route');
+                        return responder.onError(error);
+                    }
+
+                    const handler = routeRegistry
+                        .get(route, 'REQUEST_RESPONSE');
+
+                    const stream = handler.handle({data, metadata});
+
+                    const subscription = stream.subscribe({
+                            next(data) {
+                                responder.onNext({
+                                    data: Buffer.from(JSON.stringify(data)),
+                                    metadata: undefined,
+                                }, true);
                             },
                             error(e) {
                                 logger.error(e);
