@@ -1,0 +1,23 @@
+{
+  "name": "@game-platform-example/svc-friends",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "link-dev": "npm link @rsocket/rsocket-core && npm link @rsocket/rsocket-websocket-server",
+    "postinstall": "npm run link-dev"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "dependencies": {
+    "close-with-grace": "^1.1.0",
+    "pino": "^6.13.1",
+    "rxjs": "^7.3.0"
+  }
+}
