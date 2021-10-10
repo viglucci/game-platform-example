@@ -35,7 +35,7 @@ module.exports = function makeAcceptor({ logger }) {
     return {
         accept: async (setupPayload, remotePeer) => {
             logger.info(
-                `client connected [data: ${setupPayload.data}; metadata: ${setupPayload.metadata}]`
+                `peer connected [data: ${setupPayload.data}; metadata: ${setupPayload.metadata}]`
             );
 
             remotePeer.onClose(() => {

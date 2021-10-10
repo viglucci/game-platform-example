@@ -17,7 +17,8 @@ const RSocketProvider = (props) => {
     const connect = async () => {
       connector = new RSocketConnector({
         transport: new WebsocketClientTransport({
-          url: 'ws://localhost:9090',
+          // url: 'ws://localhost:9090',
+          url: 'ws://localhost:8000/friends-service',
         }),
       });
 
@@ -34,7 +35,7 @@ const RSocketProvider = (props) => {
     connect();
 
     return () => {
-      connector.close();
+      rsocket?.current?.close();
     };
   }, []);
 
