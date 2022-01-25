@@ -1486,6 +1486,25 @@
   "resolved" "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.21.tgz"
   "version" "1.0.0-next.21"
 
+"@rsocket/adapter-rxjs@file:../../rsocket-js/packages/rsocket-adapter-rxjs":
+  "resolved" "file:../../rsocket-js/packages/rsocket-adapter-rxjs"
+  "version" "1.0.0-alpha.1"
+  dependencies:
+    "@rsocket/core" "^1.0.0-alpha.1"
+    "@rsocket/messaging" "^1.0.0-alpha.1"
+    "rxjs" "^7.4.0"
+
+"@rsocket/core@file:../../rsocket-js/packages/rsocket-core":
+  "resolved" "file:../../rsocket-js/packages/rsocket-core"
+  "version" "1.0.0-alpha.1"
+
+"@rsocket/messaging@file:../../rsocket-js/packages/rsocket-messaging":
+  "resolved" "file:../../rsocket-js/packages/rsocket-messaging"
+  "version" "1.0.0-alpha.1"
+  dependencies:
+    "@rsocket/composite-metadata" "^1.0.0-alpha.1"
+    "@rsocket/core" "^1.0.0-alpha.1"
+
 "@rsocket/transport-websocket-client@file:../../rsocket-js/packages/rsocket-websocket-client":
   "resolved" "file:../../rsocket-js/packages/rsocket-websocket-client"
   "version" "1.0.0-alpha.1"
@@ -10109,7 +10128,7 @@
   dependencies:
     "tslib" "^1.9.0"
 
-"rxjs@^7.5.1":
+"rxjs@^7.5.1", "rxjs@^7.5.2":
   "integrity" "sha512-PwDt186XaL3QN5qXj/H9DGyHhP3/RYYgZZwqBv9Tv8rsAaiwFH1IsJJlcgD37J7UW5a6O67qX0KWKS3/pu0m4w=="
   "resolved" "https://registry.npmjs.org/rxjs/-/rxjs-7.5.2.tgz"
   "version" "7.5.2"

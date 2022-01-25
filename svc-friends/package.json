@@ -7,7 +7,7 @@
     "start": "node ./index.js",
     "dev": "nodemon ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "link-dev": "yarn link @rsocket/core && yarn link @rsocket/transport-websocket-server",
+    "link-dev": "npm link @rsocket/core @rsocket/transport-websocket-server @rsocket/messaging @rsocket/adapter-rxjs",
     "postinstall": "npm run link-dev"
   },
   "author": "",

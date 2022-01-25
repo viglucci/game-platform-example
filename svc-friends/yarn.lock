@@ -2,6 +2,25 @@
 # yarn lockfile v1
 
 
+"@rsocket/adapter-rxjs@file:../../rsocket-js/packages/rsocket-adapter-rxjs":
+  "resolved" "file:../../rsocket-js/packages/rsocket-adapter-rxjs"
+  "version" "1.0.0-alpha.1"
+  dependencies:
+    "@rsocket/core" "^1.0.0-alpha.1"
+    "@rsocket/messaging" "^1.0.0-alpha.1"
+    "rxjs" "^7.4.0"
+
+"@rsocket/core@file:../../rsocket-js/packages/rsocket-core":
+  "resolved" "file:../../rsocket-js/packages/rsocket-core"
+  "version" "1.0.0-alpha.1"
+
+"@rsocket/messaging@file:../../rsocket-js/packages/rsocket-messaging":
+  "resolved" "file:../../rsocket-js/packages/rsocket-messaging"
+  "version" "1.0.0-alpha.1"
+  dependencies:
+    "@rsocket/composite-metadata" "^1.0.0-alpha.1"
+    "@rsocket/core" "^1.0.0-alpha.1"
+
 "@rsocket/transport-websocket-server@file:../../rsocket-js/packages/rsocket-websocket-server":
   "resolved" "file:../../rsocket-js/packages/rsocket-websocket-server"
   "version" "1.0.0-alpha.1"

@@ -8,8 +8,8 @@ import './App.global.css';
 import useFriends from './hooks/useFriends';
 
 const ConnectedState = () => {
-  const [friends] = useFriends();
-  return <FriendsList friends={friends} />;
+  const [friends, error] = useFriends();
+  return <FriendsList friends={friends} error={error} />;
 };
 
 const ErrorState = () => {

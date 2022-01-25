@@ -1,41 +1,41 @@
 import { useContext, useEffect, useState } from 'react';
+import { RxRequestersFactory } from '@rsocket/adapter-rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 import RSocketContext from '../contexts/RSocketContext';
+import JSONCodec from '../rsocket/JsonCodec';
 
-// const { MAX_REQUEST_N } = require('@rsocket/rsocket-core');
+const jsonCodec = new JSONCodec();
 
 function useFriends() {
-  const [, rsocket] = useContext(RSocketContext);
+  const [, requester] = useContext(RSocketContext);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const [state, setState] = useState('LOADING');
 
   useEffect(() => {
-    const requestPayload = {
-      data: Buffer.from([]),
-      metadata: Buffer.from(
-        JSON.stringify({
-          route: 'FriendsService.getFriends',
-        })
-      ),
+    const fetchData = async () => {
+      try {
+        const obs = requester
+          .route('FriendsService.getFriends')
+          .request(
+            RxRequestersFactory.requestResponse({}, jsonCodec, jsonCodec)
+          )
+          .pipe(timeout({ each: 500 }));
+        const friends = await firstValueFrom(obs);
+        setData(friends);
+        setState('LOADED');
+      } catch (e) {
+        setError(e);
+        setState('ERROR');
+      }
     };
 
-    const cancellable = rsocket.requestResponse(requestPayload, {
-      onError(_error) {
-        setError(_error);
-      },
-      onNext: (payload) => {
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        const data = JSON.parse(payload.data.toString());
-        setData(data);
-      },
-      onComplete() {},
-    });
+    fetchData();
 
-    return () => {
-      cancellable.cancel();
-    };
-  }, [rsocket]);
+    return () => {};
+  }, [requester]);
 
-  return [data, error];
+  return [data, error, state];
 }
 
 export default useFriends;

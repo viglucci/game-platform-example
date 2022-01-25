@@ -12,7 +12,7 @@ const tabs = [
 ];
 
 // eslint-disable-next-line react/prop-types
-const FriendsList = ({ friends }) => {
+const FriendsList = ({ friends, error }) => {
   const [open, setOpen] = useState(true);
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -77,113 +77,121 @@ const FriendsList = ({ friends }) => {
                     </div>
                   </div>
                   <ul className="flex-1 divide-y divide-gray-200 overflow-y-auto">
-                    {friends.map((person) => (
-                      <li key={person.handle}>
-                        <div className="relative group py-6 px-5 flex items-center">
-                          <a
-                            href={person.href}
-                            className="-m-1 flex-1 block p-1"
-                          >
-                            <div
-                              className="absolute inset-0 group-hover:bg-gray-50"
-                              aria-hidden="true"
-                            />
-                            <div className="flex-1 flex items-center min-w-0 relative">
-                              <span className="flex-shrink-0 inline-block relative">
-                                <img
-                                  className="h-10 w-10 rounded-full"
-                                  src={person.imageUrl}
-                                  alt=""
-                                />
-                                <span
-                                  className={classNames(
-                                    person.status === 'online'
-                                      ? 'bg-green-400'
-                                      : 'bg-gray-300',
-                                    'absolute top-0 right-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white'
-                                  )}
-                                  aria-hidden="true"
-                                />
-                              </span>
-                              <div className="ml-4 truncate">
-                                <p className="text-sm font-medium text-gray-900 truncate">
-                                  {person.name}
-                                </p>
-                                <p className="text-sm text-gray-500 truncate">
-                                  {`@${person.handle}`}
-                                </p>
-                              </div>
-                            </div>
-                          </a>
-                          <Menu
-                            as="div"
-                            className="ml-2 flex-shrink-0 relative inline-block text-left"
-                          >
-                            <Menu.Button className="group relative w-8 h-8 bg-white rounded-full inline-flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                              <span className="sr-only">Open options menu</span>
-                              <span className="flex items-center justify-center h-full w-full rounded-full">
-                                <DotsVerticalIcon
-                                  className="w-5 h-5 text-gray-400 group-hover:text-gray-500"
-                                  aria-hidden="true"
-                                />
-                              </span>
-                            </Menu.Button>
-                            <Transition
-                              as={Fragment}
-                              enter="transition ease-out duration-100"
-                              enterFrom="transform opacity-0 scale-95"
-                              enterTo="transform opacity-100 scale-100"
-                              leave="transition ease-in duration-75"
-                              leaveFrom="transform opacity-100 scale-100"
-                              leaveTo="transform opacity-0 scale-95"
+                    {error ? (
+                      <div className="relative group py-6 px-5 flex items-center">
+                        Failed to load friends :(. Are you sure you have any?
+                      </div>
+                    ) : (
+                      friends.map((person) => (
+                        <li key={person.handle}>
+                          <div className="relative group py-6 px-5 flex items-center">
+                            <a
+                              href={person.href}
+                              className="-m-1 flex-1 block p-1"
                             >
-                              <Menu.Items className="origin-top-right absolute z-10 top-0 right-9 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                <div className="py-1 px-1">
-                                  <Menu.Item>
-                                    {({ active }) => {
-                                      return (
-                                        <button
-                                          type="button"
-                                          className={classNames(
-                                            {
-                                              'bg-indigo-500 text-white':
-                                                active,
-                                              'text-gray-900': !active,
-                                            },
-                                            'flex rounded-md items-center w-full px-2 py-2 text-sm'
-                                          )}
-                                        >
-                                          View profile
-                                        </button>
-                                      );
-                                    }}
-                                  </Menu.Item>
-                                  <Menu.Item>
-                                    {({ active }) => {
-                                      return (
-                                        <button
-                                          type="button"
-                                          className={classNames(
-                                            {
-                                              'bg-indigo-500 text-white':
-                                                active,
-                                              'text-gray-900': !active,
-                                            },
-                                            'flex rounded-md items-center w-full px-2 py-2 text-sm'
-                                          )}
-                                        >
-                                          Message
-                                        </button>
-                                      );
-                                    }}
-                                  </Menu.Item>
+                              <div
+                                className="absolute inset-0 group-hover:bg-gray-50"
+                                aria-hidden="true"
+                              />
+                              <div className="flex-1 flex items-center min-w-0 relative">
+                                <span className="flex-shrink-0 inline-block relative">
+                                  <img
+                                    className="h-10 w-10 rounded-full"
+                                    src={person.imageUrl}
+                                    alt=""
+                                  />
+                                  <span
+                                    className={classNames(
+                                      person.status === 'online'
+                                        ? 'bg-green-400'
+                                        : 'bg-gray-300',
+                                      'absolute top-0 right-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white'
+                                    )}
+                                    aria-hidden="true"
+                                  />
+                                </span>
+                                <div className="ml-4 truncate">
+                                  <p className="text-sm font-medium text-gray-900 truncate">
+                                    {person.name}
+                                  </p>
+                                  <p className="text-sm text-gray-500 truncate">
+                                    {`@${person.handle}`}
+                                  </p>
                                 </div>
-                              </Menu.Items>
-                            </Transition>
-                          </Menu>
-                        </div>
-                      </li>
-                    ))}
+                              </div>
+                            </a>
+                            <Menu
+                              as="div"
+                              className="ml-2 flex-shrink-0 relative inline-block text-left"
+                            >
+                              <Menu.Button className="group relative w-8 h-8 bg-white rounded-full inline-flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <span className="sr-only">
+                                  Open options menu
+                                </span>
+                                <span className="flex items-center justify-center h-full w-full rounded-full">
+                                  <DotsVerticalIcon
+                                    className="w-5 h-5 text-gray-400 group-hover:text-gray-500"
+                                    aria-hidden="true"
+                                  />
+                                </span>
+                              </Menu.Button>
+                              <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95"
+                                enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75"
+                                leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95"
+                              >
+                                <Menu.Items className="origin-top-right absolute z-10 top-0 right-9 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                  <div className="py-1 px-1">
+                                    <Menu.Item>
+                                      {({ active }) => {
+                                        return (
+                                          <button
+                                            type="button"
+                                            className={classNames(
+                                              {
+                                                'bg-indigo-500 text-white':
+                                                  active,
+                                                'text-gray-900': !active,
+                                              },
+                                              'flex rounded-md items-center w-full px-2 py-2 text-sm'
+                                            )}
+                                          >
+                                            View profile
+                                          </button>
+                                        );
+                                      }}
+                                    </Menu.Item>
+                                    <Menu.Item>
+                                      {({ active }) => {
+                                        return (
+                                          <button
+                                            type="button"
+                                            className={classNames(
+                                              {
+                                                'bg-indigo-500 text-white':
+                                                  active,
+                                                'text-gray-900': !active,
+                                              },
+                                              'flex rounded-md items-center w-full px-2 py-2 text-sm'
+                                            )}
+                                          >
+                                            Message
+                                          </button>
+                                        );
+                                      }}
+                                    </Menu.Item>
+                                  </div>
+                                </Menu.Items>
+                              </Transition>
+                            </Menu>
+                          </div>
+                        </li>
+                      ))
+                    )}
                   </ul>
                 </div>
               </div>
@@ -197,10 +205,12 @@ const FriendsList = ({ friends }) => {
 
 FriendsList.propTypes = {
   friends: PropTypes.arrayOf(PropTypes.object),
+  error: PropTypes.instanceOf(Error),
 };
 
 FriendsList.defaultProps = {
   friends: [],
+  error: null,
 };
 
 export default FriendsList;
