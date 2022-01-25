@@ -14,7 +14,7 @@
     "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/babel-register ./src/main/main.ts",
     "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
     "test": "jest",
-    "link-dev": "yarn link @rsocket/rsocket-core && npm link @rsocket/rsocket-websocket-client"
+    "link-dev": "yarn link @rsocket/core && npm link @rsocket/transport-websocket-client"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

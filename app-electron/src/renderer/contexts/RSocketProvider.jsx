@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import RSocketContext from './RSocketContext';
 
-const { RSocketConnector } = require('@rsocket/rsocket-core');
+const { RSocketConnector } = require('@rsocket/core');
 const {
   WebsocketClientTransport,
-} = require('@rsocket/rsocket-websocket-client');
+} = require('@rsocket/transport-websocket-client');
 
 const RSocketProvider = (props) => {
   // eslint-disable-next-line react/prop-types
@@ -20,6 +20,10 @@ const RSocketProvider = (props) => {
           // url: 'ws://localhost:9090',
           url: 'ws://localhost:8000/friends-service',
         }),
+        setup: {
+          keepAlive: 1000,
+          lifetime: 30000,
+        },
       });
 
       try {

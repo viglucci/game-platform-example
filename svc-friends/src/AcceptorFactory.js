@@ -35,8 +35,9 @@ module.exports = function makeAcceptor({ logger }) {
     return {
         accept: async (setupPayload, remotePeer) => {
             logger.info(
-                `peer connected [data: ${setupPayload.data}; metadata: ${setupPayload.metadata}]`
+                'peer connected'
             );
+            logger.info(JSON.stringify(setupPayload));
 
             remotePeer.onClose(() => {
                 logger.info('peer disconnected');
@@ -45,8 +46,8 @@ module.exports = function makeAcceptor({ logger }) {
             return {
                 requestStream(payload, requestN, responder) {
 
-                    const {data, metadata} = decodePayload(payload);
-                    const {route} = metadata;
+                    const { data, metadata } = decodePayload(payload);
+                    const { route } = metadata;
 
                     if (!route || typeof route !== 'string') {
                         const error = new Error('invalid route');
@@ -54,8 +55,8 @@ module.exports = function makeAcceptor({ logger }) {
                     }
 
                     const subscription = routeRegistry
-                        .get(route, "REQUEST_STREAM")
-                        .handle({data, metadata, requestN})
+                        .get(route, 'REQUEST_STREAM')
+                        .handle({ data, metadata, requestN })
                         .subscribe({
                             next(data) {
                                 responder.onNext({
@@ -80,8 +81,8 @@ module.exports = function makeAcceptor({ logger }) {
                     };
                 },
                 requestResponse(payload, responder) {
-                    const {data, metadata} = decodePayload(payload);
-                    const {route} = metadata;
+                    const { data, metadata } = decodePayload(payload);
+                    const { route } = metadata;
 
                     if (!route || typeof route !== 'string') {
                         const error = new Error('invalid route');
@@ -91,9 +92,10 @@ module.exports = function makeAcceptor({ logger }) {
                     const handler = routeRegistry
                         .get(route, 'REQUEST_RESPONSE');
 
-                    const stream = handler.handle({data, metadata});
+                    const stream = handler.handle({ data, metadata });
 
-                    const subscription = stream.subscribe({
+                    const subscription = stream
+                        .subscribe({
                             next(data) {
                                 responder.onNext({
                                     data: Buffer.from(JSON.stringify(data)),

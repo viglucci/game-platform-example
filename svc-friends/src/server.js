@@ -1,5 +1,5 @@
-const {RSocketServer} = require('@rsocket/rsocket-core');
-const {WebsocketServerTransport} = require('@rsocket/rsocket-websocket-server');
+const {RSocketServer} = require('@rsocket/core');
+const {WebsocketServerTransport} = require('@rsocket/transport-websocket-server');
 const Websocket = require('ws');
 const pino = require('pino');
 const logger = pino();

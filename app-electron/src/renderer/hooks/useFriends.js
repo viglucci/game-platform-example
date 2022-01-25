@@ -4,7 +4,7 @@ import RSocketContext from '../contexts/RSocketContext';
 // const { MAX_REQUEST_N } = require('@rsocket/rsocket-core');
 
 function useFriends() {
-  const [rsocketStatus, rsocket] = useContext(RSocketContext);
+  const [, rsocket] = useContext(RSocketContext);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
